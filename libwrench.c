@@ -91,8 +91,12 @@ void *get_function(const char *s, const char *lib) {
 	if (handle == NULL) {
 		handle = dlopen(lib, RTLD_LAZY | RTLD_LOCAL);
 	}
+	if (handle == NULL) {
+		printf("error: Cannot resolve %s because %s cannot be loaded\n", s, lib);
+		return NULL;
+	}
 	void *import = (void*) dlsym(handle, s);
-	printf("    [ Resolved '%s' -> %s @ %p ]\n", s, lib, import);
+	magic_printf("    [ Resolved '%s' -> %s @ %p ]\n", s, lib, import);
 	return import;
 }
 
