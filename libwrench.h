@@ -39,6 +39,8 @@ static inline void print_trace()
 
 #define ARGS(...) { char sss[1024]; sprintf(sss, __VA_ARGS__); magic_printf("    [ args: %s ]\n", sss); }
 
+#define EXECUTE(...) { if (fn != NULL) { fn(__VA_ARGS__); } else { magic_printf("WARNING: not executing because function was not resolved!\n"); } }
+
 #define HDR() void *object = NULL; HDR_INNER(0)
 #define HDR_OBJECT() HDR_INNER(1)
 #define HDR_INNER(xx) static void *inner_function = NULL; print_trace(); libwrench_level++; magic_printf("\n"); char demangled[255] = ""; int status = 0; size_t len = 255; __cxa_demangle(__func__, demangled, &len, &status); int comma_count_mangle = get_commas(demangled) + xx; magic_printf(">>> %s%s = \e[93m%s\e[39m\n", xx ? get_object_name(demangled, object) : "", __func__, demangled);
